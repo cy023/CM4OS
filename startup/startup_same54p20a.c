@@ -14,10 +14,9 @@
 #include "../src/core_cm4.h"
 
 #define SRAM_START  0x20000000
-#define SRAM_SIZE   (64 * 1024)
+#define SRAM_SIZE   (256 * 1024)
 #define SRAM_END    ((SRAM_START) + (SRAM_SIZE))
 #define STACK_START SRAM_END
-
 
 /* Section address defined in linker script */
 extern uint32_t _etext;
@@ -29,6 +28,8 @@ extern uint32_t _ebss;
 extern uint32_t _estack;
 
 extern int main(void);
+void Default_Reset_Handler(void);
+void Default_Handler(void);
 
 /* Cortex-M4 processor system handlers */
 void Reset_Handler          (void) __attribute__((weak, alias("Default_Reset_Handler")));
@@ -343,6 +344,7 @@ void Default_Reset_Handler(void)
 
     copy_data_section();
     clear_bss_section();
+    
     main();
     while (1) ;
 }
