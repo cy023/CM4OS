@@ -28,7 +28,6 @@ SECTIONS
         *(.text.*)
         *(.init)
         *(.fini)
-
         *(.rodata)
         *(.rodata.*)
         . = ALIGN(4);
@@ -49,10 +48,12 @@ SECTIONS
     .bss : 
     {
         _sbss = .;
+        __bss_start__ = _sbss;
         *(.bss)
         *(.bss.*)
         *(COMMON)
         . = ALIGN(4);
         _ebss = .;
+        __bss_end__ = _ebss;
     } >SRAM
 }

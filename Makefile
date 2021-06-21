@@ -1,7 +1,7 @@
 PROJECT	= build/cm4os
 
 MACH    = cortex-m4
-MCU     = same54p20a
+MCU     = atsame54p20a
 
 CC      = arm-none-eabi-gcc
 OBJCOPY = arm-none-eabi-objcopy
@@ -22,15 +22,16 @@ CFLAGS += -Wall -Wextra
 # CFLAGS += -DSTM32F107xC -DDEBUG
 # CFLAGS += -Wp,-MM,-MP,-MT,$(BUILD)/$(*F).o,-MF,$(BUILD)/$(*F).d
 
-LDFLAGS  = -nostdlib
+# LDFLAGS  = -nostdlib
 LDFLAGS += -T startup/same54p20a.ld
 LDFLAGS += -Wl,-Map=$(PROJECT).map
 # LDFLAGS += -nostartfiles -Wl,-Map=$(PROJECT).map,--cref,--gc-sections
-LDFLAGS += -lc -lgcc
-LDFLAGS += -lm
+# LDFLAGS += -lc -lgcc
+# LDFLAGS += -lm
+LDFLAGS += -specs=nosys.specs
 # LDFLAGS += -specs=nosys.specs --specs=nano.specs -flto
 
-CSRC   = main.c startup_same54p20a.c gpio.c
+CSRC   = main.c startup_same54p20a.c
 COBJ   = $(CSRC:.c=.o)
 COBJ  := $(addprefix $(BUILD)/,$(COBJ))
 VPATH  = src:startup
@@ -81,3 +82,6 @@ $(COBJ): $(BUILD)/%.o : %.c
 
 clean:
 	rm build/*
+
+upload:
+	atprogram -t atmelice -i SWD -d $(MCU) -f ...
